@@ -1,0 +1,3 @@
+---- configBC95_DEBUG Matches (2 in 2 files) ----
+Nb_bc95.c (src):#if configBC95_DEBUG ==1
+systemConfig.h (inc):#define  configBC95_DEBUG			    1

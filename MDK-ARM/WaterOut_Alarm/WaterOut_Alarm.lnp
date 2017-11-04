@@ -1,0 +1,32 @@
+--cpu Cortex-M0+
+"waterout_alarm\stm32l0xx_hal_gpio.o"
+"waterout_alarm\stm32l0xx_hal_dma.o"
+"waterout_alarm\stm32l0xx_hal_tim_ex.o"
+"waterout_alarm\stm32l0xx_hal.o"
+"waterout_alarm\stm32l0xx_hal_uart.o"
+"waterout_alarm\stm32l0xx_hal_flash.o"
+"waterout_alarm\stm32l0xx_hal_tim.o"
+"waterout_alarm\stm32l0xx_hal_i2c.o"
+"waterout_alarm\stm32l0xx_hal_flash_ramfunc.o"
+"waterout_alarm\stm32l0xx_hal_i2c_ex.o"
+"waterout_alarm\stm32l0xx_hal_rcc_ex.o"
+"waterout_alarm\stm32l0xx_hal_flash_ex.o"
+"waterout_alarm\stm32l0xx_hal_pwr_ex.o"
+"waterout_alarm\stm32l0xx_hal_cortex.o"
+"waterout_alarm\stm32l0xx_hal_uart_ex.o"
+"waterout_alarm\stm32l0xx_hal_rcc.o"
+"waterout_alarm\stm32l0xx_hal_pwr.o"
+"waterout_alarm\system_stm32l0xx.o"
+"waterout_alarm\startup_stm32l031xx.o"
+"waterout_alarm\usart.o"
+"waterout_alarm\stm32l0xx_hal_msp.o"
+"waterout_alarm\main.o"
+"waterout_alarm\gpio.o"
+"waterout_alarm\stm32l0xx_it.o"
+"waterout_alarm\ringbuffer.o"
+"waterout_alarm\nb_bc95.o"
+--library_type=microlib --strict --scatter "WaterOut_Alarm\WaterOut_Alarm.sct"
+
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "WaterOut_Alarm.map" -o WaterOut_Alarm\WaterOut_Alarm.axf
