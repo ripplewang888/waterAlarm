@@ -140,9 +140,9 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 void uart2_mcu_BC95_StartRecv(void){
 
     /*create ring buffer for  uart2*/
-    ring_buf_create(&g_ringBufStruct, g_rxbuf, sizeof(g_rxbuf));
+    ring_buf_create(&g_ringBufStruct, g_rxbuf, BUF_LEN);
 
-    HAL_UART_Receive_IT(&huart2, (uint8_t *)&g_uart2_recvChar, 1);
+    HAL_UART_Receive_IT(&huart2, (unsigned char *)&g_uart2_recvChar, 1);
 }
 
 /*
@@ -154,12 +154,7 @@ void uart2_mcu_BC95_StartRecv(void){
 */
 uint32_t uart2_mcu_BC95_Receive(uint8_t *readBuff)
 {
-    uint32_t len = 0;
-    
-    /*wait for uart Rx complete*/
-    while (UartRxComplete == SET){}
-    len = ring_buf_get(&g_ringBufStruct, readBuff, BUF_LEN);
-    return len;
+    return ring_buf_get(&g_ringBufStruct, readBuff, BUF_LEN);
 }
 
 
@@ -191,10 +186,11 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *UartHandle)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     ring_buf_put(&g_ringBufStruct, (unsigned char *)&g_uart2_recvChar, 1);
+    g_uart2_recvChar=0;
     UartRxComplete = SET;
 
     /*ripple, call back receive, so , do not need to receive in Loop*/
-    HAL_UART_Receive_IT(huart, (uint8_t *)&g_uart2_recvChar, 1);
+    HAL_UART_Receive_IT(huart, (unsigned char  *)&g_uart2_recvChar, 1);
     UartRxComplete = RESET;
 
 }

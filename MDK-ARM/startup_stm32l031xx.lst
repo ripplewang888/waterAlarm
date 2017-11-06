@@ -361,11 +361,11 @@ ARM Macro Assembler    Page 6
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M0+ --apcs=inter
 work --depend=waterout_alarm\startup_stm32l031xx.d -owaterout_alarm\startup_stm
-32l031xx.o -ID:\ripple\keiluVision_workspace\WaterOut_Alarm\MDK-ARM\RTE -IC:\Ke
-il_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include -IC:\Keil_v5\ARM\PACK\Keil\STM32L0
-xx_DFP\1.6.0 --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SET
-A 514" --predefine="_RTE_ SETA 1" --predefine="STM32L031xx SETA 1" --list=start
-up_stm32l031xx.lst startup_stm32l031xx.s
+32l031xx.o -ID:\ripple\keiluVision_workspace\waterAlarm\MDK-ARM\RTE -IC:\Keil_v
+5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include -IC:\Keil_v5\ARM\PACK\Keil\STM32L0xx_D
+FP\1.6.0 --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 51
+4" --predefine="_RTE_ SETA 1" --predefine="STM32L031xx SETA 1" --list=startup_s
+tm32l031xx.lst startup_stm32l031xx.s
 
 
 

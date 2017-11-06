@@ -10,7 +10,7 @@
 #include "systemConfig.h"
 #include "ringBuffer.h"
 #include "assert.h"
-
+#include "stm32l0xx_hal_gpio.h"
 typedef enum _rc_t{
        RT_SUCCESS       =  0,
 	BC95_STATUS_FAILED        =  1,

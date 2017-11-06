@@ -57,6 +57,7 @@
 /* USER CODE END Private defines */
 
 void MX_GPIO_Init(void);
+int  waterAlarm_status();
 
 /* USER CODE BEGIN Prototypes */
 

@@ -21,36 +21,60 @@ Target DLL:      Segger\JL2CM3.dll V2.99.13.0
 Dialog DLL:      TARMCM1.DLL V1.9.0.0
  
 <h2>Project:</h2>
-D:\ripple\keiluVision_workspace\WaterOut_Alarm\MDK-ARM\WaterOut_Alarm.uvprojx
-Project File Date:  11/02/2017
+D:\ripple\keiluVision_workspace\waterAlarm\MDK-ARM\WaterOut_Alarm.uvprojx
+Project File Date:  11/06/2017
 
 <h2>Output:</h2>
 Build target 'WaterOut_Alarm'
 compiling main.c...
-../Src/main.c(72): warning:  #223-D: function "memset" declared implicitly
+../Inc/gpio.h(60): warning:  #1295-D: Deprecated declaration waterAlarm_status - give arg types
+  int  waterAlarm_status();
+../Src/main.c(68): warning:  #223-D: function "memset" declared implicitly
       memset(cmdRecv, 0, sizeof(cmdRecv));
-../Src/main.c(73): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
-      if(RT_SUCCESS != send_AT_to_bc95(AT_CFUN_FULL, 3, cmdRecv)){
-../Src/main.c(79): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
-      if(RT_SUCCESS != send_AT_to_bc95(AT_SETBAND_5, 3, cmdRecv)){
-../Src/main.c(85): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
-      if(RT_SUCCESS != send_AT_to_bc95(AT_SET_FREQUENCY, 3, cmdRecv)){
-../Src/main.c(91): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
-      if(RT_SUCCESS != send_AT_to_bc95(AT_SET_PLMM, 3, cmdRecv)){
-../Src/main.c(98): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
-      if(RT_SUCCESS != send_AT_to_bc95(AT_GET_NEU_STATUS, 3, cmdRecv)){
-../Src/main.c(105): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
-      if(RT_SUCCESS != send_AT_to_bc95(AT_SET_ATTACH, 3, cmdRecv)){
-../Src/main.c(112): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
-      if(RT_SUCCESS != send_AT_to_bc95(AT_GET_ATTACH, 3, cmdRecv)){
-../Src/main.c(119): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
-      if(RT_SUCCESS != send_AT_to_bc95(AT_SOCKET_CREATE, 3, cmdRecv)){
-../Src/main.c(164): warning:  #223-D: function "memset" declared implicitly
-          memset(readBuff,0,BUF_LEN);
+../Src/main.c(69): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
+      if(RT_SUCCESS != send_AT_to_bc95(AT_CFUN_FULL, AT_TRY_TIMES, cmdRecv)){
+../Src/main.c(76): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
+      if(RT_SUCCESS != send_AT_to_bc95(AT_SETBAND_5, AT_TRY_TIMES, cmdRecv)){
+../Src/main.c(82): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
+      if(RT_SUCCESS != send_AT_to_bc95(AT_SET_FREQUENCY, AT_TRY_TIMES, cmdRecv)){
+../Src/main.c(88): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
+      if(RT_SUCCESS != send_AT_to_bc95(AT_SET_PLMM, AT_TRY_TIMES, cmdRecv)){
+../Src/main.c(95): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
+      if(RT_SUCCESS != send_AT_to_bc95(AT_GET_NEU_STATUS, AT_TRY_TIMES, cmdRecv)){
+../Src/main.c(102): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
+      if(RT_SUCCESS != send_AT_to_bc95(AT_SET_ATTACH, AT_TRY_TIMES, cmdRecv)){
+../Src/main.c(109): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
+      if(RT_SUCCESS != send_AT_to_bc95(AT_GET_ATTACH, AT_TRY_TIMES, cmdRecv)){
+../Src/main.c(116): warning:  #223-D: function "send_AT_to_bc95" declared implicitly
+      if(RT_SUCCESS != send_AT_to_bc95(AT_SOCKET_CREATE, AT_TRY_TIMES, cmdRecv)){
 ../Src/main.c: 10 warnings, 0 errors
+compiling gpio.c...
+../Inc/gpio.h(60): warning:  #1295-D: Deprecated declaration waterAlarm_status - give arg types
+  int  waterAlarm_status();
+../Src/gpio.c: 1 warning, 0 errors
+compiling nb_bc95.c...
+../Inc/gpio.h(60): warning:  #1295-D: Deprecated declaration waterAlarm_status - give arg types
+  int  waterAlarm_status();
+..\Src\nb_bc95.c(23): warning:  #223-D: function "strlen" declared implicitly
+      uart2_mcu_BC95_SendMsg(cmdSend,strlen((char*)cmdSend));
+..\Src\nb_bc95.c(27): warning:  #223-D: function "memset" declared implicitly
+          memset(readBuf, 0, BUF_LEN);
+..\Src\nb_bc95.c(28): warning:  #223-D: function "uart2_mcu_BC95_Receive" declared implicitly
+          len = uart2_mcu_BC95_Receive(readBuf);
+..\Src\nb_bc95.c(29): warning:  #223-D: function "strcat" declared implicitly
+          strcat(cmdRecv,readBuf, len);
+..\Src\nb_bc95.c(31): warning:  #223-D: function "strstr" declared implicitly
+          if(NULL  != strstr(cmdRecv, "OK\r\n")){
+..\Src\nb_bc95.c(36): warning:  #223-D: function "strstr" declared implicitly
+          if(NULL  != strstr(cmdRecv, "ERROR\r\n")){
+..\Src\nb_bc95.c(73): warning:  #223-D: function "memset" declared implicitly
+              memset(cmdRecv, 0, BUF_LEN);
+..\Src\nb_bc95.c(61): warning:  #177-D: variable "token" was declared but never referenced
+      char *token = NULL;
+..\Src\nb_bc95.c: 9 warnings, 0 errors
 linking...
-Program Size: Code=7908 RO-data=744 RW-data=16 ZI-data=2304  
-"WaterOut_Alarm\WaterOut_Alarm.axf" - 0 Error(s), 10 Warning(s).
+Program Size: Code=7522 RO-data=282 RW-data=16 ZI-data=2304  
+"WaterOut_Alarm\WaterOut_Alarm.axf" - 0 Error(s), 20 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -61,7 +85,7 @@ Package Vendor: ARM
    * Component: CORE Version: 3.40.0
 
 <h2>Collection of Component include folders:</h2>
-  D:\ripple\keiluVision_workspace\WaterOut_Alarm\MDK-ARM\RTE
+  D:\ripple\keiluVision_workspace\waterAlarm\MDK-ARM\RTE
   C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include
   C:\Keil_v5\ARM\PACK\Keil\STM32L0xx_DFP\1.6.0
 

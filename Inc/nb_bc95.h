@@ -28,7 +28,8 @@
 #define  AT_SOCKET_CLOSE                                 "AT+NSOCL=0\r\n"
 
 
-#define BC95_AT_TIMEOUT                                 1000
+#define BC95_AT_TIMEOUT                                 3000
+#define AT_TRY_TIMES                                       5
 
 #ifdef __cplusplus
 }
