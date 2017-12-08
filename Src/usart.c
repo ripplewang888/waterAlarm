@@ -47,14 +47,38 @@
 __IO ITStatus UartRxComplete = RESET;
 __IO ITStatus UartTxReady = RESET;
 
+__IO ITStatus LPUartRxComplete = RESET;
+__IO ITStatus LPUTxReady = RESET;
+
 static uint8_t  g_uart2_recvChar;
 ringBufTypeDef   g_ringBufStruct;
 static unsigned char  g_rxbuf[BUF_LEN];        
 
 /* USER CODE END 0 */
 
+UART_HandleTypeDef hlpuart1;
 UART_HandleTypeDef huart2;
 
+/* LPUART1 init function */
+
+void MX_LPUART1_UART_Init(void)
+{
+
+  hlpuart1.Instance = LPUART1;
+  hlpuart1.Init.BaudRate = 9600;
+  hlpuart1.Init.WordLength = UART_WORDLENGTH_8B;
+  hlpuart1.Init.StopBits = UART_STOPBITS_1;
+  hlpuart1.Init.Parity = UART_PARITY_NONE;
+  hlpuart1.Init.Mode = UART_MODE_TX_RX;
+  hlpuart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  hlpuart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  hlpuart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&hlpuart1) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+}
 /* USART2 init function */
 
 void MX_USART2_UART_Init(void)
@@ -81,7 +105,33 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 {
 
   GPIO_InitTypeDef GPIO_InitStruct;
-  if(uartHandle->Instance==USART2)
+  if(uartHandle->Instance==LPUART1)
+  {
+  /* USER CODE BEGIN LPUART1_MspInit 0 */
+
+  /* USER CODE END LPUART1_MspInit 0 */
+    /* LPUART1 clock enable */
+    __HAL_RCC_LPUART1_CLK_ENABLE();
+  
+    /**LPUART1 GPIO Configuration    
+    PA13     ------> LPUART1_RX
+    PA14     ------> LPUART1_TX 
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_14;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF6_LPUART1;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    /* LPUART1 interrupt Init */
+    HAL_NVIC_SetPriority(AES_RNG_LPUART1_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(AES_RNG_LPUART1_IRQn);
+  /* USER CODE BEGIN LPUART1_MspInit 1 */
+
+  /* USER CODE END LPUART1_MspInit 1 */
+  }
+  else if(uartHandle->Instance==USART2)
   {
   /* USER CODE BEGIN USART2_MspInit 0 */
 
@@ -112,7 +162,27 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 {
 
-  if(uartHandle->Instance==USART2)
+  if(uartHandle->Instance==LPUART1)
+  {
+  /* USER CODE BEGIN LPUART1_MspDeInit 0 */
+
+  /* USER CODE END LPUART1_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_LPUART1_CLK_DISABLE();
+  
+    /**LPUART1 GPIO Configuration    
+    PA13     ------> LPUART1_RX
+    PA14     ------> LPUART1_TX 
+    */
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_13|GPIO_PIN_14);
+
+    /* LPUART1 interrupt Deinit */
+    HAL_NVIC_DisableIRQ(AES_RNG_LPUART1_IRQn);
+  /* USER CODE BEGIN LPUART1_MspDeInit 1 */
+
+  /* USER CODE END LPUART1_MspDeInit 1 */
+  }
+  else if(uartHandle->Instance==USART2)
   {
   /* USER CODE BEGIN USART2_MspDeInit 0 */
 
@@ -175,34 +245,85 @@ void uart2_mcu_BC95_SendMsg(uint8_t* sendBuff, size_t size)
 }
 
 
+void HAL_USART2_TxCpltCallback()
+{
+    UartTxReady = SET;
+}
+
+void HAL_LPUUART1_TxCpltCallback()
+{
+    LPUTxReady = SET;
+}
 
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *UartHandle)
 {
-	  UartTxReady = SET;
+  //  HAL_UART4_TxCpltCallback(UartHandle);
+  /* Set transmission flag: transfer complete */
+  switch((unsigned int)UartHandle->Instance)
+  {
+    case (unsigned int)USART2:
+      HAL_USART2_TxCpltCallback(UartHandle);
+      break;
+     
+    case (unsigned int)LPUART1:
+      HAL_LPUUART1_TxCpltCallback(UartHandle);
+      break;    
+    default:
+      break;
+  }
+    
 }
 
-
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+void HAL_USART2_RxCpltCallback(UART_HandleTypeDef *UartHandle)
 {
     ring_buf_put(&g_ringBufStruct, (unsigned char *)&g_uart2_recvChar, 1);
     g_uart2_recvChar=0;
     UartRxComplete = SET;
 
     /*ripple, call back receive, so , do not need to receive in Loop*/
-    HAL_UART_Receive_IT(huart, (unsigned char  *)&g_uart2_recvChar, 1);
+    HAL_UART_Receive_IT(UartHandle, (unsigned char  *)&g_uart2_recvChar, 1);
     UartRxComplete = RESET;
 
 }
 
+void HAL_LPUART1_RxCpltCallback(UART_HandleTypeDef *UartHandle)
+{
+    LPUartRxComplete = SET;
+
+}
+
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
+{
+   // HAL_UART4_RxCpltCallback(UartHandle);
+  /* Set transmission flag: transfer complete */
+  switch((unsigned int)UartHandle->Instance)
+  {
+    case (unsigned int)USART2:
+      HAL_USART2_RxCpltCallback(UartHandle);
+      break;
+    
+    case (unsigned int)LPUART1:
+      HAL_LPUART1_RxCpltCallback(UartHandle);
+      break;
+    default:
+      break;
+  }
+    
+}
+
+
+
+
 
 int fputc(int ch, FILE *f)
 {
-    while (UartTxReady == SET){}
-    HAL_UART_Transmit_IT(&huart2, (uint8_t*)&ch, 1);
+    while (LPUTxReady == SET){}
+    HAL_UART_Transmit_IT(&hlpuart1, (uint8_t*)&ch, 1);
     // UartTxReady is wait for transmit done
-    while (UartTxReady != SET){}
-    UartTxReady = RESET;
+    while (LPUTxReady != SET){}
+    LPUTxReady = RESET;
     return (ch);
 }
 

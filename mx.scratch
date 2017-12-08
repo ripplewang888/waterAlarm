@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Project>
-<ProjectName>D:\ripple\keiluVision_workspace\WaterOut_Alarm\\WaterOut_Alarm</ProjectName>
+<ProjectName>D:\ripple\keiluVision_workspace\waterAlarm\\WaterOut_Alarm</ProjectName>
 <CMSIS>..\Drivers\CMSIS</CMSIS>
 <HAL_Driver>C:\Users\admin\STM32Cube\Repository\STM32Cube_FW_L0_V1.10.0\Drivers\CMSIS</HAL_Driver>
 
@@ -35,7 +35,7 @@
     <usedDebug>true</usedDebug>
     	<debugprobe></debugprobe>
     <optimization></optimization>
-    <icfloc>1</icfloc>
+    <icfloc>0</icfloc>
     <Adefines>
         <define></define>
     </Adefines>   
@@ -78,16 +78,16 @@
 		   <group>
 		 		<name>STM32L0xx_HAL_Driver</name>
 						<file>
-							<name>../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim.c</name>
-						</file>
-						<file>
-							<name>../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c</name>
-						</file>
-						<file>
 							<name>../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_uart.c</name>
 						</file>
 						<file>
 							<name>../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_uart_ex.c</name>
+						</file>
+						<file>
+							<name>../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim.c</name>
+						</file>
+						<file>
+							<name>../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c</name>
 						</file>
 						<file>
 							<name>../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.c</name>

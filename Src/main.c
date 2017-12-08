@@ -38,8 +38,11 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32l0xx_hal.h"
+#include "usart.h"
+#include "gpio.h"
+#include "nb_bc95.h"
 #include "common.h"
-
 
 #if MAIN_DEBUG
       #define MAIN_DBG(format,...)   printf("[MAIN DEBUG] %s:%d %s:: "format"\r\n",  __FILE__, __LINE__, __FUNCTION__,##__VA_ARGS__)
@@ -48,21 +51,38 @@
 #endif
 
 
+/* USER CODE BEGIN Includes */
+
+/* USER CODE END Includes */
+
+/* Private variables ---------------------------------------------------------*/
+
+/* USER CODE BEGIN PV */
+/* Private variables ---------------------------------------------------------*/
+
+/* USER CODE END PV */
+
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-
-/* USER CODE BEGIN PFP */
-/* Private function prototypes -----------------------------------------------*/
-
-/* USER CODE END PFP */
-
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
 
 void user_Init()
 {
     uint8_t cmdRecv[BUF_LEN];
+
+    //AT_CFUN_DISABLE
+    memset(cmdRecv, 0, sizeof(cmdRecv));
+    if(RT_SUCCESS != send_AT_to_bc95(AT_CFUN_DISABLE, AT_TRY_TIMES, cmdRecv)){
+        MAIN_DBG("BC95 module AT CFun enable failed. please check BC95 module.");
+        return;
+    }
+
+    //AT_NCDP_SERVER
+    memset(cmdRecv, 0, sizeof(cmdRecv));
+    if(RT_SUCCESS != send_AT_to_bc95(AT_NCDP_SERVER, AT_TRY_TIMES, cmdRecv)){
+        MAIN_DBG("BC95 module AT CFun enable failed. please check BC95 module.");
+        return;
+    }
+    
 
     /*BC95  module init, send AT command*/
     memset(cmdRecv, 0, sizeof(cmdRecv));
@@ -78,25 +98,13 @@ void user_Init()
         return;
     }
 
+    //AT_SET_APN
     memset(cmdRecv, 0, sizeof(cmdRecv));
-    if(RT_SUCCESS != send_AT_to_bc95(AT_SET_FREQUENCY, AT_TRY_TIMES, cmdRecv)){
-        MAIN_DBG("BC95 module AT set frequency failed. please check BC95 module");
+    if(RT_SUCCESS != send_AT_to_bc95(AT_SET_APN, AT_TRY_TIMES, cmdRecv)){
+        MAIN_DBG("BC95 module AT set band failed. please check BC95 module");
         return;
     }
-
-    memset(cmdRecv, 0, sizeof(cmdRecv));
-    if(RT_SUCCESS != send_AT_to_bc95(AT_SET_PLMM, AT_TRY_TIMES, cmdRecv)){
-        MAIN_DBG("BC95 module AT set PLMM failed. please check BC95 module");
-        return;
-    }
-
-    //AT+NUESTATS check 
-    memset(cmdRecv, 0, sizeof(cmdRecv));
-    if(RT_SUCCESS != send_AT_to_bc95(AT_GET_NEU_STATUS, AT_TRY_TIMES, cmdRecv)){
-        MAIN_DBG("BC95 module AT get NEU Status failed. please check BC95 module");
-        return;
-    }
-
+    
     //attach
     memset(cmdRecv, 0, sizeof(cmdRecv));
     if(RT_SUCCESS != send_AT_to_bc95(AT_SET_ATTACH, AT_TRY_TIMES, cmdRecv)){
@@ -104,41 +112,54 @@ void user_Init()
         return;
     }
 
-    //get attach
+    HAL_Delay(20000);
+    
+    //get attach ip address 
     memset(cmdRecv, 0, sizeof(cmdRecv));
-    if(RT_SUCCESS != send_AT_to_bc95(AT_GET_ATTACH, AT_TRY_TIMES, cmdRecv)){
+    if(RT_SUCCESS != send_AT_to_bc95(AT_GET_ADDRESS, AT_TRY_TIMES, cmdRecv)){
         MAIN_DBG("BC95 module AT get attach failed. please check BC95 module");
         return;
     }
 
-    //create socket
+    //new message
     memset(cmdRecv, 0, sizeof(cmdRecv));
-    if(RT_SUCCESS != send_AT_to_bc95(AT_SOCKET_CREATE, AT_TRY_TIMES, cmdRecv)){
+    if(RT_SUCCESS != send_AT_to_bc95(AT_NEW_MESSAGE, AT_TRY_TIMES, cmdRecv)){
         MAIN_DBG("BC95 module AT create socket failed. please check BC95 module");
         return;
     }
     
 }
 
- 
 
 
 int main(void)
 {
+
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
   /* MCU Configuration----------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
 
+  /* USER CODE BEGIN SysInit */
 
+  /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_LPUART1_UART_Init();
+
 
   /*uart2 start to receive*/
   uart2_mcu_BC95_StartRecv();
@@ -147,14 +168,14 @@ int main(void)
   HAL_Delay(10000);
   user_Init();
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
+
   while (1)
   { 
-        printf("%d\n",waterAlarm_status());
+        //printf("system start up now ..\r\n");
+        printf("%d\r\n",waterAlarm_status());
+        socket_send("7",waterAlarm_status());
         HAL_Delay(2000);
   }
-  /* USER CODE END 3 */
 
 }
 
@@ -197,8 +218,9 @@ void SystemClock_Config(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2|RCC_PERIPHCLK_LPUART1;
   PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
+  PeriphClkInit.Lpuart1ClockSelection = RCC_LPUART1CLKSOURCE_PCLK1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);

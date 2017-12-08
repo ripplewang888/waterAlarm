@@ -39,6 +39,8 @@ rc_t BC95_sendAT(uint8_t *cmdSend , uint8_t *cmdRecv,int timeoutMs)
         }
 
     }
+
+    BC95_DBG("ripple----> cmdRecv = %s", cmdRecv);
     
     /*If time out ,means do not have response. To ensure ringbuffer data right, so clear it*/
     //ring_buf_clr(&g_ringBufStruct);
@@ -68,6 +70,7 @@ rc_t  send_AT_to_bc95(char *cmdSend, int times, unsigned char * cmdRecv)
     {
         BC95_DBG("times i = %d, cmdSend =%s\n",i+1,cmdSend);
         ret = BC95_sendAT((uint8_t *)cmdSend, cmdRecv, BC95_AT_TIMEOUT);
+        HAL_Delay(2000);
         /*if command not success, will do cycle times*/
         if(ret != RT_SUCCESS){
             memset(cmdRecv, 0, BUF_LEN);
@@ -88,5 +91,18 @@ rc_t  send_AT_to_bc95(char *cmdSend, int times, unsigned char * cmdRecv)
 }
 
 
-
+/*
+/  BC95 module socket send data. 
+/ @parameter:  
+/      ipaddr :   socket send ip address
+/      port    :   socket send port
+*/
+void socket_send(char *len, char *data)
+{
+    char dtbuf[BUF_LEN];
+    uint8_t cmdRecv[BUF_LEN];
+    //AT+NMGS=7,AA720000010101
+    sprintf((char *)dtbuf,"AT+NMGS=7,AA7200000101%02d\r\n",data);
+    send_AT_to_bc95(dtbuf, 1, cmdRecv);
+}
 

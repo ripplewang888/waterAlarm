@@ -51,6 +51,7 @@
 
 /* USER CODE END Includes */
 
+extern UART_HandleTypeDef hlpuart1;
 extern UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN Private defines */
@@ -59,10 +60,8 @@ extern UART_HandleTypeDef huart2;
 
 extern void _Error_Handler(char *, int);
 
+void MX_LPUART1_UART_Init(void);
 void MX_USART2_UART_Init(void);
-void uart2_mcu_BC95_StartRecv(void);
-void uart2_mcu_BC95_SendMsg(uint8_t* sendBuff, size_t size);
-
 
 /* USER CODE BEGIN Prototypes */
 

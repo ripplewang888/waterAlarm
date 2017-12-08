@@ -20,6 +20,9 @@ typedef enum _rc_t{
 } rc_t;
 
 
+#define MAIN_DEBUG    1
+#define  configBC95_DEBUG  1
+
 
 #ifdef __cplusplus
 }

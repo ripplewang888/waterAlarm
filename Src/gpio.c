@@ -39,7 +39,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "gpio.h"
-#include "common.h"
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -74,15 +73,10 @@ void MX_GPIO_Init(void)
 
 }
 
-/*
-@brief:  read water out Pin value.
-*/
 int  waterAlarm_status()
 {
     return HAL_GPIO_ReadPin(WATEROUT_GPIO_Input_GPIO_Port,WATEROUT_GPIO_Input_Pin);
 }
-
-
 
 /**
   * @}

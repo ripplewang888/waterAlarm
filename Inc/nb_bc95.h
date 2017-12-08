@@ -13,7 +13,7 @@
 #define  AT_GET_MANUFACTURER_REVERSION        "AT+CGMR\r\n"
 #define  AT_SETBAND_5                                          "AT+NBAND=5\r\n"
 #define  AT_SET_FREQUENCY                                  "AT+NEARFCN=0,2509\r\n"
-#define  AT_SET_APN                                           "AT+CGDCONT=1,\"IP\",\"TELE\"\r\n"
+#define  AT_SET_APN                                           "AT+CGDCONT=1,\"IP\",\"APN\"\r\n"
 #define  AT_SET_PLMM                                         "AT+COPS=1,2,\"46011\"\r\n"
 #define  AT_SET_CSQ                                              "AT+CSQ\r\n"
 #define  AT_GET_NEU_STATUS                                "AT+NUESTATS\r\n"
@@ -24,12 +24,14 @@
 #define  AT_GET_ADDRESS                                   "AT+CGPADDR\r\n"
 #define  AT_DO_PING                                           "AT+NPING=192.168.76.10\r\n"
 #define  AT_SOCKET_CREATE                               "AT+NSOCR=DGRAM,17,6001,1\r\n"
-#define  AT_SOCKET_SEND                                   "AT+NSOST=0,101.200.193.50,9100,2,4142\r\n"
+#define  AT_SOCKET_SEND                                   "AT+NSOST=0,%s,%s,2,4142\r\n"
 #define  AT_SOCKET_CLOSE                                 "AT+NSOCL=0\r\n"
+#define  AT_NCDP_SERVER                                   "AT+NCDP=180.101.147.115,5683\r\n"
+#define  AT_NEW_MESSAGE                                  "AT+NNMI=1\r\n"
 
 
-#define BC95_AT_TIMEOUT                                 3000
-#define AT_TRY_TIMES                                       5
+#define BC95_AT_TIMEOUT                                 5000
+#define AT_TRY_TIMES                                       10
 
 #ifdef __cplusplus
 }

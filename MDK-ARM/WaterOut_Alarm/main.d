@@ -1,6 +1,5 @@
 waterout_alarm\main.o: ../Src/main.c
 waterout_alarm\main.o: ../Inc/main.h
-waterout_alarm\main.o: ../Inc/common.h
 waterout_alarm\main.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal.h
 waterout_alarm\main.o: ../Inc/stm32l0xx_hal_conf.h
 waterout_alarm\main.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_rcc.h
@@ -33,6 +32,7 @@ waterout_alarm\main.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_uart_ex
 waterout_alarm\main.o: ../Inc/usart.h
 waterout_alarm\main.o: ../Inc/gpio.h
 waterout_alarm\main.o: ../Inc/nb_bc95.h
+waterout_alarm\main.o: ../Inc/common.h
 waterout_alarm\main.o: ../Inc/systemConfig.h
 waterout_alarm\main.o: ../Inc/ringBuffer.h
 waterout_alarm\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\assert.h

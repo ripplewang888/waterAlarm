@@ -1,3 +1,2 @@
----- configBC95_DEBUG Matches (2 in 2 files) ----
-Nb_bc95.c (src):#if configBC95_DEBUG ==1
-systemConfig.h (inc):#define  configBC95_DEBUG			    1
+---- AT_SET_APN Matches (1 in 1 files) ----
+Nb_bc95.h (d:\ripple\keiluvision_workspace\wateralarm\inc):#define  AT_SET_APN                                           "AT+CGDCONT=1,\"IP\",\"TELE\"\r\n"
